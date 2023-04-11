@@ -1,43 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
+
 /**
- * alloc_grid - allocates a grid, make space and free space
- * @width: takes in width of grid
- * @height: height of grid
- * Return: grid with freed spaces
+ * str_concat - function that concatenates two strings
+ *
+ * @s1: string of chars
+ * @s2: string of chars
+ *
+ * Return: address of the newly allocated memory
  */
 
-int **alloc_grid(int width, int height)
+char *str_concat(char *s1, char *s2)
 {
-/*Declaring variables*/
-int **grid;
-int i, j;
+	unsigned int len1, len2;
+	unsigned int i, j;
+	char *str_copy;
+	char *tmp1 = s1;
+	char *tmp2 = s2;
 
-if (width <= 0 || height <= 0)
-{
-return (NULL);
-}
+	if (s1 == NULL)
+		s1 = "";
+	if (s2 == NULL)
+		s2 = "";
 
-grid = malloc(sizeof(int *) * height); /*malloc*/
+	i = 0;
+	while (*s1++)
+		i++;
+	len1 = i;
+	s1 = tmp1;
 
-if (grid == NULL)
-{
-return (NULL);
-}
+	i = 0;
+	while (*s2++)
+		i++;
+	len2 = i;
+	s2 = tmp2;
 
-for (i = 0; i < height; i++)
-{
-grid[i] = malloc(sizeof(int) * width);
-if (grid[i] == NULL)
-{
-for (i = i - 1; i >= 0; i--)
-{
-free(grid[i]);
-}
-free(grid);
-return (NULL);
-}
-}
-for (i = 0; j < width; j++)
-grid[i][j] = 0;
-return (grid);
+	str_copy = malloc((len1 + len2) * sizeof(char) + 1);
+	if (str_copy == NULL)
+		return (NULL);
+
+	j = 0;
+	while (j < len1)
+	{
+		str_copy[j] = s1[j];
+		j++;
+	}
+	while (j < len1 + len2)
+	{
+		str_copy[j] = s2[j - len1];
+		j++;
+	}
+	str_copy[j] = '\0';
+	return (str_copy);
 }
